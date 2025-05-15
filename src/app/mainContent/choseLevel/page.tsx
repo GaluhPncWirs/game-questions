@@ -23,7 +23,7 @@ export default function ChoseenLevel() {
               width={100}
               className="w-full object-cover"
             ></Image>
-            <div className="hover:bg-slate-300 rounded-full h-44 w-44 absolute opacity-50 right-24 top-16 cursor-pointer"></div>
+            <div className="hover:bg-amber-400 rounded-full h-44 w-44 absolute opacity-50 right-24 top-16 cursor-pointer"></div>
             <h2 className="text-white font-semibold text-2xl text-center">
               Mengarah ke mode mudah
             </h2>
@@ -42,7 +42,7 @@ export default function ChoseenLevel() {
               width={100}
               className="w-full object-cover"
             ></Image>
-            <div className="hover:bg-slate-300 rounded-full h-44 w-44 absolute opacity-50 right-24 top-16 cursor-pointer"></div>
+            <div className="hover:bg-amber-400 rounded-full h-44 w-44 absolute opacity-50 right-24 top-16 cursor-pointer"></div>
             <h2 className="text-white font-semibold text-2xl text-center">
               Mengarah ke mode sedang
             </h2>
@@ -61,7 +61,7 @@ export default function ChoseenLevel() {
               width={100}
               className="w-full object-cover"
             ></Image>
-            <div className="hover:bg-slate-300 rounded-full h-44 w-44 absolute opacity-50 right-24 top-16 cursor-pointer"></div>
+            <div className="hover:bg-amber-400 rounded-full h-44 w-44 absolute opacity-50 right-24 top-16 cursor-pointer"></div>
             <h2 className="text-white font-semibold text-2xl text-center">
               Mengarah ke mode sulit
             </h2>
