@@ -1,19 +1,40 @@
 "use client";
-import { hard } from "@/data/dataQuestions";
+import { easy, hard, medium } from "@/data/dataQuestions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Questions() {
   const [waktu, setWaktu] = useState(15);
+  const [randomQuestionsGenAlpha, setRandomQuestionsGenAlpha] =
+    useState<any>(null);
+  const [randomQuestionsMilennial, setRandomQuestionsMilennial] =
+    useState<any>(null);
+  const [randomQuestionsGenZ, setRandomQuestionsGenZ] = useState<any>(null);
+  const getLevel = localStorage.getItem("level");
+
+  // useEffect(() => {
+  //   if (waktu <= 0) return;
+
+  //   const timer = setInterval(() => {
+  //     setWaktu((prev) => prev - 1);
+  //   }, 800);
+  //   return () => clearInterval(timer);
+  // }, [waktu]);
 
   useEffect(() => {
-    if (waktu <= 0) return;
+    const randomIndex = Math.floor(Math.random() * easy.length);
+    setRandomQuestionsGenAlpha(easy[randomIndex]);
+  }, []);
 
-    const timer = setInterval(() => {
-      setWaktu((prev) => prev - 1);
-    }, 800);
-    return () => clearInterval(timer);
-  }, [waktu]);
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * medium.length);
+    setRandomQuestionsMilennial(medium[randomIndex]);
+  }, []);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * hard.length);
+    setRandomQuestionsGenZ(hard[randomIndex]);
+  }, []);
 
   return (
     <div className="bg-slate-900 h-screen">
