@@ -1,7 +1,7 @@
 export const easy = [
     {
         id: 1,
-        pathImage : "/images/gambarSoal/soal_gen alpha_1.jpg",
+        pathImage : "/images/gambarSoal/soal_genAlpha_2.jpg",
         soal : "Apa nama karakter toilet ini",
         jawaban : {
             ke1: "evil flush",
@@ -12,8 +12,8 @@ export const easy = [
     },
     {
         id: 2,
-        pathImage : "/images/gambarSoal/soal_gen alpha_2.jpg",
-        soal : "Apa nama karakter toilet ini",
+        pathImage : "/images/gambarSoal/soal_genAlpha_1.jpg",
+        soal : "apa yang dikatakan kucing ini sehingga dia viral?",
         jawaban : {
             ke1: "awoo, awooo",
             ke2: "U ii a i o ui i a io",
@@ -27,7 +27,7 @@ export const medium = [
     {
         id: 1,
         pathImage : "/images/gambarSoal/soal_milenium_1.jpg",
-        soal : "Apa jenis pensil ini?",
+        soal : "apa nama pensil ini?",
         jawaban : {
             ke1: "pensil lentur",
             ke2: "pensil leyot",
@@ -37,7 +37,7 @@ export const medium = [
     },
     {
         id: 2,
-        pathImage : "/images/gambarSoal/soal_milenium_2.jpg",
+        pathImage : "/images/gambarSoal/soal-milenium_2.jpg",
         soal : "Apa yang Dikatakan ODGJ ini Setelah Tertangkap?",
         jawaban : {
             ke1: "AAAAAAAAKKKK",
@@ -52,7 +52,7 @@ export const hard = [
     {
         id: 1,
         pathImage : "/images/gambarSoal/soal_gen-z_1.jpg",
-        soal : "Siapa nama panjang keju ini ?",
+        soal : "siapa nama panjang keju ini",
         jawaban : {
             ke1: "keju joget",
             ke2: "keju goyang",
