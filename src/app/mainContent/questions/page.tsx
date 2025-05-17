@@ -1,18 +1,26 @@
 "use client";
-import { easy, hard, medium } from "@/data/dataQuestions";
-import { AnyARecord } from "dns";
+import { easy } from "@/data/dataSoalEasy";
+import { medium } from "@/data/dataSoalMedium";
+import { hard } from "@/data/dataSoalHard";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function Questions() {
-  const [waktu, setWaktu] = useState(15);
+export default function QuestionsPage() {
+  const [waktu, setWaktu] = useState(10);
   const [randomQuestionsGenAlpha, setRandomQuestionsGenAlpha] =
     useState<any>(null);
   const [randomQuestionsMilennial, setRandomQuestionsMilennial] =
     useState<any>(null);
   const [randomQuestionsGenZ, setRandomQuestionsGenZ] = useState<any>(null);
-  const getLevel = localStorage.getItem("level");
   const [points, setPoints] = useState(0);
+  const [levelGame, setLevelGame] = useState("");
+
+  useEffect(() => {
+    const getLevel = localStorage.getItem("level");
+    if (getLevel) {
+      setLevelGame(getLevel);
+    }
+  });
 
   // useEffect(() => {
   //   if (waktu <= 0) return;
@@ -39,7 +47,7 @@ export default function Questions() {
   }, []);
 
   function sourceImage() {
-    if (getLevel === "genAlpha") {
+    if (levelGame === "genAlpha") {
       if (randomQuestionsGenAlpha !== null) {
         if (randomQuestionsGenAlpha.pathImage !== undefined) {
           return randomQuestionsGenAlpha.pathImage;
@@ -47,7 +55,7 @@ export default function Questions() {
       }
     }
 
-    if (getLevel === "millenial") {
+    if (levelGame === "millenial") {
       if (randomQuestionsMilennial !== null) {
         if (randomQuestionsMilennial.pathImage !== undefined) {
           return randomQuestionsMilennial.pathImage;
@@ -55,7 +63,7 @@ export default function Questions() {
       }
     }
 
-    if (getLevel === "genZ") {
+    if (levelGame === "genZ") {
       if (randomQuestionsGenZ !== null) {
         if (randomQuestionsGenZ.pathImage !== undefined) {
           return randomQuestionsGenZ.pathImage;
@@ -64,69 +72,76 @@ export default function Questions() {
     }
   }
 
+  function getNextQuestion() {
+    if (levelGame === "genAlpha") {
+      const randomIndex = Math.floor(Math.random() * easy.length);
+      setRandomQuestionsGenAlpha(easy[randomIndex]);
+    } else if (levelGame === "millenial") {
+      const randomIndex = Math.floor(Math.random() * medium.length);
+      setRandomQuestionsMilennial(medium[randomIndex]);
+    } else if (levelGame === "genZ") {
+      const randomIndex = Math.floor(Math.random() * hard.length);
+      setRandomQuestionsGenZ(hard[randomIndex]);
+    }
+  }
+
   function corrections(event: any) {
     // gen alpha
-    if (getLevel === "genAlpha") {
+    if (levelGame === "genAlpha") {
       if (
         randomQuestionsGenAlpha?.soal ===
-        "apa yang dikatakan kucing ini sehingga dia viral?"
+          "apa yang dikatakan kucing ini sehingga dia viral?" &&
+        event === randomQuestionsGenAlpha.jawabanBenar
       ) {
-        if (event === "U ii a i o ui i a io") {
-          return setPoints((prev) => prev + 10);
-        } else {
-          return setPoints((prev) => prev - 10);
-        }
-      }
-      if (
-        randomQuestionsGenAlpha?.soal ===
-        "Apa nama karakter toilet jahat pada kartun ini"
+        getNextQuestion();
+        setPoints((prev) => prev + 10);
+      } else if (
+        randomQuestionsGenAlpha?.soal === "Apa nama karakter toilet ini" &&
+        event === randomQuestionsGenAlpha.jawabanBenar
       ) {
-        if (event === "Skibidi Toilet") {
-          return setPoints((prev) => prev + 10);
-        } else {
-          return setPoints((prev) => prev - 10);
-        }
+        getNextQuestion();
+        setPoints((prev) => prev + 10);
+      } else {
+        setPoints((prev) => prev - 10);
       }
     }
 
     // millenial
-    if (getLevel === "millenial") {
-      if (randomQuestionsMilennial?.soal === "apa nama pensil ini?") {
-        if (event === "pensil inul") {
-          return setPoints((prev) => prev + 10);
-        } else {
-          return setPoints((prev) => prev - 10);
-        }
-      }
-
+    if (levelGame === "millenial") {
       if (
-        randomQuestionsMilennial?.soal ===
-        "apa yang dikatakan ODGJ ini setelah tertangkap?"
+        randomQuestionsMilennial?.soal === "apa nama pensil ini?" &&
+        event === randomQuestionsMilennial.jawabanBenar
       ) {
-        if (event === "Baik, terimakasih atas kerjasamanya") {
-          return setPoints((prev) => prev + 10);
-        } else {
-          return setPoints((prev) => prev - 10);
-        }
+        getNextQuestion();
+        setPoints((prev) => prev + 10);
+      } else if (
+        randomQuestionsMilennial?.soal ===
+          "Apa yang Dikatakan ODGJ ini Setelah Tertangkap?" &&
+        event === randomQuestionsMilennial.jawabanBenar
+      ) {
+        getNextQuestion();
+        setPoints((prev) => prev + 10);
+      } else {
+        setPoints((prev) => prev - 10);
       }
     }
 
     // gen-z
-    if (getLevel === "genZ") {
-      if (randomQuestionsGenZ?.soal === "siapa nama panjang keju ini") {
-        if (event === "keju joget") {
-          return setPoints((prev) => prev + 10);
-        } else {
-          return setPoints((prev) => prev - 10);
-        }
-      }
-
-      if (randomQuestionsGenZ?.soal === "apa yang di katakan orang ini") {
-        if (event === "dari mana duitnya") {
-          return setPoints((prev) => prev + 10);
-        } else {
-          return setPoints((prev) => prev - 10);
-        }
+    if (levelGame === "genZ") {
+      if (
+        randomQuestionsGenZ?.soal === "siapa nama panjang keju ini" &&
+        event === randomQuestionsGenZ.jawabanBenar
+      ) {
+        getNextQuestion();
+        setPoints((prev) => prev + 10);
+      } else if (
+        randomQuestionsGenZ?.soal === "apa yang di katakan orang ini" &&
+        event === randomQuestionsGenZ.jawabanBenar
+      ) {
+        getNextQuestion();
+        setPoints((prev) => prev + 10);
+      } else {
+        setPoints((prev) => prev - 10);
       }
     }
   }
@@ -146,10 +161,10 @@ export default function Questions() {
               <div className="mt-2">{points}</div>
             </div>
             <div className="basis-3/4 bg-slate-700 h-96 rounded-xl py-2">
-              <h1 className="font-semibold text-2xl text-slate-200 text-center mb-3">
-                {getLevel === "genAlpha"
+              <h1 className="font-semibold text-2xl text-slate-200 text-center mb-8">
+                {levelGame === "genAlpha"
                   ? randomQuestionsGenAlpha?.soal
-                  : getLevel === "millenial"
+                  : levelGame === "millenial"
                   ? randomQuestionsMilennial?.soal
                   : randomQuestionsGenZ?.soal}
               </h1>
@@ -171,9 +186,9 @@ export default function Questions() {
               id="jawaban1"
               onClick={(e) => corrections(e.currentTarget.textContent)}
             >
-              {getLevel === "genAlpha"
+              {levelGame === "genAlpha"
                 ? randomQuestionsGenAlpha?.jawaban.ke1
-                : getLevel === "millenial"
+                : levelGame === "millenial"
                 ? randomQuestionsMilennial?.jawaban.ke1
                 : randomQuestionsGenZ?.jawaban.ke1}
             </li>
@@ -182,9 +197,9 @@ export default function Questions() {
               id="jawaban2"
               onClick={(e) => corrections(e.currentTarget.textContent)}
             >
-              {getLevel === "genAlpha"
+              {levelGame === "genAlpha"
                 ? randomQuestionsGenAlpha?.jawaban.ke2
-                : getLevel === "millenial"
+                : levelGame === "millenial"
                 ? randomQuestionsMilennial?.jawaban.ke2
                 : randomQuestionsGenZ?.jawaban.ke2}
             </li>
@@ -193,9 +208,9 @@ export default function Questions() {
               id="jawaban3"
               onClick={(e) => corrections(e.currentTarget.textContent)}
             >
-              {getLevel === "genAlpha"
+              {levelGame === "genAlpha"
                 ? randomQuestionsGenAlpha?.jawaban.ke3
-                : getLevel === "millenial"
+                : levelGame === "millenial"
                 ? randomQuestionsMilennial?.jawaban.ke3
                 : randomQuestionsGenZ?.jawaban.ke3}
             </li>
@@ -204,9 +219,9 @@ export default function Questions() {
               id="jawaban4"
               onClick={(e) => corrections(e.currentTarget.textContent)}
             >
-              {getLevel === "genAlpha"
+              {levelGame === "genAlpha"
                 ? randomQuestionsGenAlpha?.jawaban.ke4
-                : getLevel === "millenial"
+                : levelGame === "millenial"
                 ? randomQuestionsMilennial?.jawaban.ke4
                 : randomQuestionsGenZ?.jawaban.ke4}
             </li>
