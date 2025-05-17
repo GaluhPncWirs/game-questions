@@ -4,9 +4,10 @@ import { medium } from "@/data/dataSoalMedium";
 import { hard } from "@/data/dataSoalHard";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import GameOver from "@/app/component/gameOver/gameOver";
 
 export default function QuestionsPage() {
-  const [waktu, setWaktu] = useState(10);
+  const [waktu, setWaktu] = useState(30);
   const [randomQuestionsGenAlpha, setRandomQuestionsGenAlpha] =
     useState<any>(null);
   const [randomQuestionsMilennial, setRandomQuestionsMilennial] =
@@ -14,22 +15,27 @@ export default function QuestionsPage() {
   const [randomQuestionsGenZ, setRandomQuestionsGenZ] = useState<any>(null);
   const [points, setPoints] = useState(0);
   const [levelGame, setLevelGame] = useState("");
+  const [timesOut, setTimesOut] = useState(false);
 
   useEffect(() => {
     const getLevel = localStorage.getItem("level");
     if (getLevel) {
       setLevelGame(getLevel);
     }
-  });
+  }, []);
 
-  // useEffect(() => {
-  //   if (waktu <= 0) return;
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setWaktu((prev) => prev - 1);
+    }, 800);
 
-  //   const timer = setInterval(() => {
-  //     setWaktu((prev) => prev - 1);
-  //   }, 800);
-  //   return () => clearInterval(timer);
-  // }, [waktu]);
+    if (waktu <= 0) {
+      setTimesOut(true);
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [waktu]);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * easy.length);
@@ -149,84 +155,90 @@ export default function QuestionsPage() {
   return (
     <div className="bg-slate-900 h-screen">
       <div className="w-11/12 mx-auto">
-        <div className="w-1/5 pt-5 mx-auto">
-          <h1 className="text-white text-center bg-slate-600 py-3 text-2xl font-bold rounded-xl">
-            {waktu > 0 ? waktu : "Waktu Habis"}
-          </h1>
-        </div>
-        <div>
-          <div className="w-10/12 my-9 mx-auto flex justify-evenly items-center gap-x-5">
-            <div className="basis-1/5 bg-amber-300 rounded-xl text-center h-28 font-semibold text-2xl">
-              <h1 className="mt-3">SCORE</h1>
-              <div className="mt-2">{points}</div>
-            </div>
-            <div className="basis-3/4 bg-slate-700 h-96 rounded-xl py-2">
-              <h1 className="font-semibold text-2xl text-slate-200 text-center mb-8">
-                {levelGame === "genAlpha"
-                  ? randomQuestionsGenAlpha?.soal
-                  : levelGame === "millenial"
-                  ? randomQuestionsMilennial?.soal
-                  : randomQuestionsGenZ?.soal}
+        {timesOut === true ? (
+          <GameOver />
+        ) : (
+          <div>
+            <div className="w-1/5 pt-5 mx-auto">
+              <h1 className="text-white text-center bg-slate-600 py-3 text-2xl font-bold rounded-xl">
+                {waktu > 0 ? waktu : "Waktu Habis"}
               </h1>
-              {sourceImage() && (
-                <Image
-                  src={sourceImage()}
-                  alt="gambar pertannyaan"
-                  className="w-1/3 mx-auto rounded-xl object-cover"
-                  width={100}
-                  height={100}
-                  loading="lazy"
-                />
-              )}
+            </div>
+            <div>
+              <div className="w-10/12 my-9 mx-auto flex justify-evenly items-center gap-x-5">
+                <div className="basis-1/5 bg-amber-300 rounded-xl text-center h-28 font-semibold text-2xl">
+                  <h1 className="mt-3">SCORE</h1>
+                  <div className="mt-2">{points}</div>
+                </div>
+                <div className="basis-3/4 bg-slate-700 h-96 rounded-xl py-2">
+                  <h1 className="font-semibold text-2xl text-slate-200 text-center mb-8">
+                    {levelGame === "genAlpha"
+                      ? randomQuestionsGenAlpha?.soal
+                      : levelGame === "millenial"
+                      ? randomQuestionsMilennial?.soal
+                      : randomQuestionsGenZ?.soal}
+                  </h1>
+                  {sourceImage() && (
+                    <Image
+                      src={sourceImage()}
+                      alt="gambar pertannyaan"
+                      className="w-1/3 mx-auto rounded-xl object-cover"
+                      width={100}
+                      height={100}
+                      loading="lazy"
+                    />
+                  )}
+                </div>
+              </div>
+              <ul className="text-white flex justify-evenly text-lg font-semibold">
+                <li
+                  className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
+                  id="jawaban1"
+                  onClick={(e) => corrections(e.currentTarget.textContent)}
+                >
+                  {levelGame === "genAlpha"
+                    ? randomQuestionsGenAlpha?.jawaban.ke1
+                    : levelGame === "millenial"
+                    ? randomQuestionsMilennial?.jawaban.ke1
+                    : randomQuestionsGenZ?.jawaban.ke1}
+                </li>
+                <li
+                  className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
+                  id="jawaban2"
+                  onClick={(e) => corrections(e.currentTarget.textContent)}
+                >
+                  {levelGame === "genAlpha"
+                    ? randomQuestionsGenAlpha?.jawaban.ke2
+                    : levelGame === "millenial"
+                    ? randomQuestionsMilennial?.jawaban.ke2
+                    : randomQuestionsGenZ?.jawaban.ke2}
+                </li>
+                <li
+                  className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
+                  id="jawaban3"
+                  onClick={(e) => corrections(e.currentTarget.textContent)}
+                >
+                  {levelGame === "genAlpha"
+                    ? randomQuestionsGenAlpha?.jawaban.ke3
+                    : levelGame === "millenial"
+                    ? randomQuestionsMilennial?.jawaban.ke3
+                    : randomQuestionsGenZ?.jawaban.ke3}
+                </li>
+                <li
+                  className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
+                  id="jawaban4"
+                  onClick={(e) => corrections(e.currentTarget.textContent)}
+                >
+                  {levelGame === "genAlpha"
+                    ? randomQuestionsGenAlpha?.jawaban.ke4
+                    : levelGame === "millenial"
+                    ? randomQuestionsMilennial?.jawaban.ke4
+                    : randomQuestionsGenZ?.jawaban.ke4}
+                </li>
+              </ul>
             </div>
           </div>
-          <ul className="text-white flex justify-evenly text-lg font-semibold">
-            <li
-              className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
-              id="jawaban1"
-              onClick={(e) => corrections(e.currentTarget.textContent)}
-            >
-              {levelGame === "genAlpha"
-                ? randomQuestionsGenAlpha?.jawaban.ke1
-                : levelGame === "millenial"
-                ? randomQuestionsMilennial?.jawaban.ke1
-                : randomQuestionsGenZ?.jawaban.ke1}
-            </li>
-            <li
-              className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
-              id="jawaban2"
-              onClick={(e) => corrections(e.currentTarget.textContent)}
-            >
-              {levelGame === "genAlpha"
-                ? randomQuestionsGenAlpha?.jawaban.ke2
-                : levelGame === "millenial"
-                ? randomQuestionsMilennial?.jawaban.ke2
-                : randomQuestionsGenZ?.jawaban.ke2}
-            </li>
-            <li
-              className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
-              id="jawaban3"
-              onClick={(e) => corrections(e.currentTarget.textContent)}
-            >
-              {levelGame === "genAlpha"
-                ? randomQuestionsGenAlpha?.jawaban.ke3
-                : levelGame === "millenial"
-                ? randomQuestionsMilennial?.jawaban.ke3
-                : randomQuestionsGenZ?.jawaban.ke3}
-            </li>
-            <li
-              className="bg-slate-600 cursor-pointer py-6 px-10 rounded-xl hover:bg-slate-700"
-              id="jawaban4"
-              onClick={(e) => corrections(e.currentTarget.textContent)}
-            >
-              {levelGame === "genAlpha"
-                ? randomQuestionsGenAlpha?.jawaban.ke4
-                : levelGame === "millenial"
-                ? randomQuestionsMilennial?.jawaban.ke4
-                : randomQuestionsGenZ?.jawaban.ke4}
-            </li>
-          </ul>
-        </div>
+        )}
       </div>
     </div>
   );
