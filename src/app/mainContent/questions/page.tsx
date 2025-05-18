@@ -13,9 +13,9 @@ export default function QuestionsPage() {
   const [randomQuestionsMilennial, setRandomQuestionsMilennial] =
     useState<any>(null);
   const [randomQuestionsGenZ, setRandomQuestionsGenZ] = useState<any>(null);
-  const [points, setPoints] = useState(0);
-  const [levelGame, setLevelGame] = useState("");
-  const [timesOut, setTimesOut] = useState(false);
+  const [points, setPoints] = useState<number>(0);
+  const [levelGame, setLevelGame] = useState<string>("");
+  const [timesOut, setTimesOut] = useState<boolean>(false);
 
   useEffect(() => {
     const getLevel = localStorage.getItem("level");
@@ -36,6 +36,13 @@ export default function QuestionsPage() {
 
     return () => clearInterval(timer);
   }, [waktu]);
+
+  useEffect(() => {
+    if (timesOut === false) {
+      setPoints(0);
+      setWaktu(30);
+    }
+  }, [timesOut]);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * easy.length);
@@ -156,7 +163,7 @@ export default function QuestionsPage() {
     <div className="bg-slate-900 h-screen">
       <div className="w-11/12 mx-auto">
         {timesOut === true ? (
-          <GameOver />
+          <GameOver points={points} setTimesOut={setTimesOut} />
         ) : (
           <div>
             <div className="w-1/5 pt-5 mx-auto">
